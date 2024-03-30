@@ -27,5 +27,5 @@
 
 Ссылка на GitHub Pages:
 
-https://kuznetsov-ma.github.io/mestomain-5/
+https://kuznetsov-ma.github.io/mestomain-6/
 
