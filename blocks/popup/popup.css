@@ -14,10 +14,20 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, .5);
-  position: fixed;
+  position: fixed;  
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   z-index: 10;
+  cursor: pointer;
+  transition: visibility 0.3s linear, opacity 0.3s linear;
+  animation-name: zoom1;
+  animation-duration: 1s;
+}
+
+
+@keyframes zoom1 {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }

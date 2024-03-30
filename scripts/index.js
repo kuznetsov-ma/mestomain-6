@@ -1,10 +1,45 @@
+// function createCard(card) {
+//   const cardTemplate = document
+//     .querySelector("#card-template")
+//     .content.cloneNode(true);
+//   const cardTitle = cardTemplate.querySelector(".card__title");
+//   const cardImage = cardTemplate.querySelector(".card__image");
+
+//   cardImage.setAttribute("src", card.link);
+//   cardImage.setAttribute("alt", card.name);
+//   cardTitle.textContent = card.name;
+//   cardTemplate
+//     .querySelector(".card__delete-button")
+//     .addEventListener("click", (evt) => {
+//       evt.target.closest(".places__item").remove();
+//     });
+
+//   cardTemplate.querySelector(".card__like-button").addEventListener("click", (evt) => {
+//     if (evt.target.dataset.heart == "false" || evt.target.dataset.heart == null) //если при клике эта дата фолс
+//     {
+//       evt.target.style['background-image'] = "url('images/like-active.svg')"; //то меняем картинку
+//       evt.target.dataset.heart = "true"; //и меняем дату на true
+//     }
+//     else //иначе
+//     {
+//       evt.target.style['background-image'] = "url('images/like-inactive.svg')"; //понимаем что лайк нажимался, меняем картинку тогда на обраткую
+//       evt.target.dataset.heart = "false"; //и дату на false
+//     }
+//   });
+//   return cardTemplate;
+// }
+
+import { initialCards } from '/scripts/cards.js'
+
+import '/pages/index.css'; // добавьте импорт главного файла стилей 
+
+
 function createCard(card) {
   const cardTemplate = document
     .querySelector("#card-template")
     .content.cloneNode(true);
   const cardTitle = cardTemplate.querySelector(".card__title");
   const cardImage = cardTemplate.querySelector(".card__image");
-
   cardImage.setAttribute("src", card.link);
   cardImage.setAttribute("alt", card.name);
   cardTitle.textContent = card.name;
@@ -12,6 +47,42 @@ function createCard(card) {
     .querySelector(".card__delete-button")
     .addEventListener("click", (evt) => {
       evt.target.closest(".places__item").remove();
+    });
+  var modal = document.getElementById("myModal");
+  cardTemplate.querySelector("img").addEventListener("click", (evt) => {
+    var modalImg = document.querySelector("#img01"); //тут мы берем из разметки элементы модалки. Модалка тоже в разметке лежит, там div с айдишником myModal.
+    var captionText = document.querySelector("#caption");
+    modal.style.display = "flex"; //показываем модалку с картинкой
+    modalImg.src = cardImage.src; //делаем подписи какие-то, если надо. Если не надо, можно убрать.
+    captionText.innerHTML = cardImage.alt;
+    var span = document.getElementsByClassName("close")[0];
+    // Когда нажимаем на крестик, модалка скрывается средствами css.
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+    modal.addEventListener("click", (evt) => {
+      if (evt.currentTarget === evt.target) {
+        modal.style.display = "none";
+      }
+    });
+  });
+
+  cardTemplate
+    .querySelector(".card__like-button")
+    .addEventListener("click", (evt) => {
+      if (
+        evt.target.dataset.heart == "false" ||
+        evt.target.dataset.heart == null
+      ) {
+        //если при клике эта дата фолс
+        evt.target.style["background-image"] = "url('/images/like-active.svg')"; //то меняем картинку
+        evt.target.dataset.heart = "true"; //и меняем дату на true
+      } //иначе
+      else {
+        evt.target.style["background-image"] =
+          "url('/images/like-inactive.svg')"; //понимаем что лайк нажимался, меняем картинку тогда на обраткую
+        evt.target.dataset.heart = "false"; //и дату на false
+      }
     });
   return cardTemplate;
 }
@@ -57,8 +128,8 @@ document
 
 function openProfilePopup() {
   openPopup(editProfilePopup);
-  userNameInput.value = titleElement.textContent;
-  userAboutInput.value = subtitleElement.textContent;
+  titleElement.value = userNameInput.innerHTML;
+  subtitleElement.value = userAboutInput.innerHTML;
 }
 
 function openPopup(popupElement) {
@@ -68,8 +139,8 @@ function openPopup(popupElement) {
 closeProfileButton.addEventListener("click", function () {
   closePopup(editProfilePopup);
 
-  titleElement.value = "";
-  subtitleElement.value = "";
+  titleElement.value = userNameInput.innerHTML;
+  subtitleElement.value = userAboutInput.innerHTML;
 });
 
 function closePopup(popupElement) {
@@ -84,8 +155,8 @@ function submitFormProfile(evt) {
   userAboutInput.textContent = subtitleElement.value;
   closePopup(editProfilePopup);
 
-  titleElement.value = "";
-  subtitleElement.value = "";
+  titleElement.value = userNameInput.innerHTML;
+  subtitleElement.value = userAboutInput.innerHTML;
 }
 
 //добавление карточки
@@ -132,3 +203,22 @@ formElementCard.addEventListener("submit", submitFormCard);
 // @todo: Функция удаления карточки
 
 // @todo: Вывести карточки на страницу
+
+formElementCard.addEventListener("click", (evt) => {
+  if (evt.currentTarget === evt.target) {
+    //evt.currentTarget.style.cursor = "pointer";
+    closePopup(formElementCard);
+    pictureNameInput.value = "";
+    pictureLinkInput.value = "";
+  }
+});
+
+formElementProfile.addEventListener("click", (evt) => {
+  if (evt.currentTarget === evt.target) {
+    // evt.currentTarget.style.cursor = "pointer";
+    closePopup(formElementProfile);
+  }
+});
+
+// const logoImage = new URL('logo.svg', import.meta.url);
+// getElementById('logoPicture').setAttribute("src", logoImage);
